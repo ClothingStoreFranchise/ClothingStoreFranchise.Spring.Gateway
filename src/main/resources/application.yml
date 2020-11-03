@@ -16,18 +16,17 @@ eureka:
     register-with-eureka: true
 
 zuul:
-  sensitive-headers: Cookie
+  sensitive-headers: Cookie,Set-Cookie
   ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
-  ribbon:
-      eager-load:
-         enabled: true
+  
+ribbon:
+  eager-load:
+     enabled: true
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+     
          
 jwt:
   config:
     login-url: /auth/login
-    type: signed
-
-ribbon:
-  ReadTimeout: 10000
-  ConnectTimeout: 10000
-  
+    type: signed  

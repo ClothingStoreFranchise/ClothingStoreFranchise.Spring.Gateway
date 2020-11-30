@@ -37,7 +37,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                         HttpMethod.DELETE.name(),
                         HttpMethod.PATCH.name(),
                         HttpMethod.OPTIONS.name(),
-                        HttpMethod.PATCH.name()
+                        HttpMethod.PATCH.name(),
+                        HttpMethod.HEAD.name()
                    ));   
                    cors.applyPermitDefaultValues();           
                    return cors;   
@@ -50,8 +51,17 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(jwtConfiguration.getLoginUrl(), "/**/swagger-ui.html").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/swagger-resources/**", "/**/webjars/springfox-swagger-ui/**", "/**/v2/api-docs/**").permitAll()
-                .antMatchers("/v1/admin/**").hasRole(Rol.ADMIN)
-                .antMatchers("/auth/user/**").hasAnyRole(Rol.CUSTOMER,Rol.ADMIN)
+                .antMatchers("/auth/user/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/catalog/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/catalog/**").permitAll()
+                .antMatchers("/inventory/warehouses/**").permitAll()
+                .antMatchers("/inventory/products/**").permitAll()
+                .antMatchers("/inventory/products/**/stocks-without-warehouses").permitAll()
+                .antMatchers("/customers/customers/**").permitAll()
+                .antMatchers(HttpMethod.PUT,"/customers/cart/").permitAll()
+                .antMatchers("/customers/cart/**").hasRole(Rol.CUSTOMER)
+                .antMatchers("/employees/**").permitAll()
+                //.antMatchers(HttpMethod.GET, "/auth/user/**").hasAnyRole(Rol.CUSTOMER,Rol.ADMIN)
                 .anyRequest().authenticated();
     }
 }

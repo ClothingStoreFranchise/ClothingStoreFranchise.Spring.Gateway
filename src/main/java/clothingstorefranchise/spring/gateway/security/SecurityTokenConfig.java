@@ -2,15 +2,11 @@ package clothingstorefranchise.spring.gateway.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import clothingstorefranchise.spring.common.constants.Rol;
 import clothingstorefranchise.spring.common.security.config.JwtConfiguration;
 
 import javax.servlet.http.HttpServletResponse;
@@ -57,10 +53,13 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/inventory/warehouses/**").permitAll()
                 .antMatchers("/inventory/products/**").permitAll()
                 .antMatchers("/inventory/products/**/stocks-without-warehouses").permitAll()
+                .antMatchers("/inventory/warehouse-stocks/**").permitAll()
+                .antMatchers("/inventory/shop-stocks/**").permitAll()
                 .antMatchers("/customers/customers/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/customers/cart/").permitAll()
-                .antMatchers("/customers/cart/**").hasRole(Rol.CUSTOMER)
+                .antMatchers("/customers/cart/**").permitAll()
                 .antMatchers("/employees/**").permitAll()
+                .antMatchers("/sales/**").permitAll()
                 //.antMatchers(HttpMethod.GET, "/auth/user/**").hasAnyRole(Rol.CUSTOMER,Rol.ADMIN)
                 .anyRequest().authenticated();
     }

@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-        <groupId>clothingstorefranchise</groupId>
-        <artifactId>common</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../Spring.Common/pom.xml</relativePath> <!-- lookup parent from repository -->
-    </parent>
-
+		<groupId>ClothingStoreFranchise</groupId>
+	  	<artifactId>common</artifactId>
+	  	<version>1.0.8</version>
+	</parent>
+	
+	<groupId>com.github.ClothingStoreFranchise</groupId>
 	<artifactId>gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gateway</name>
@@ -17,15 +17,18 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.SR4</spring-cloud.version>
-		<clothingstorefranchise.version>1.0-SNAPSHOT</clothingstorefranchise.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>clothingstorefranchise</groupId>
-			<artifactId>common</artifactId>
-			<version>${clothingstorefranchise.version}</version>
+			<groupId>ClothingStoreFranchise.common-lib</groupId>
+		  	<artifactId>common-lib</artifactId>
+		  	<version>1.0.8</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
@@ -33,7 +36,7 @@
 	</dependencies>
 
 	<build>
-        <finalName>discovery</finalName>
+        <finalName>gateway</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -52,5 +55,11 @@
             </plugin>
         </plugins>
     </build>
-
+	
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 </project>

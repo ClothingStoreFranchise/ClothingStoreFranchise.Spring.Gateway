@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import clothingstorefranchise.spring.common.constants.Rol;
 import clothingstorefranchise.spring.common.security.config.JwtConfiguration;
 
 import javax.servlet.http.HttpServletResponse;
@@ -47,19 +48,30 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(jwtConfiguration.getLoginUrl(), "/**/swagger-ui.html").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/swagger-resources/**", "/**/webjars/springfox-swagger-ui/**", "/**/v2/api-docs/**").permitAll()
-                .antMatchers("/auth/user/**").permitAll()
+                
+                .antMatchers("/auth/user/**").permitAll()     
+                
                 .antMatchers(HttpMethod.GET,"/catalog/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/catalog/**").permitAll()
-                .antMatchers("/inventory/warehouses/**").permitAll()
-                .antMatchers("/inventory/products/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/catalog/**").hasRole(Rol.ADMIN)
+                .antMatchers(HttpMethod.PUT,"/catalog/**").hasRole(Rol.ADMIN)
+                .antMatchers(HttpMethod.DELETE,"/catalog/**").hasRole(Rol.ADMIN)
+                
+                .antMatchers("/inventory/warehouses/**").hasAnyRole(Rol.WAREHOUSE_EMPLOYEE,Rol.ADMIN)
+                .antMatchers("/inventory/shops/**").hasAnyRole(Rol.SHOP_EMPLOYEE,Rol.ADMIN)
                 .antMatchers("/inventory/products/**/stocks-without-warehouses").permitAll()
-                .antMatchers("/inventory/warehouse-stocks/**").permitAll()
-                .antMatchers("/inventory/shop-stocks/**").permitAll()
-                .antMatchers("/customers/customers/**").permitAll()
-                .antMatchers(HttpMethod.PUT,"/customers/cart/").permitAll()
+                .antMatchers("/inventory/products/**").hasRole(Rol.ADMIN)
+                
+                .antMatchers(HttpMethod.POST,"/customers/customers/**").permitAll()
+                .antMatchers("/customers/customers/**").hasRole(Rol.CUSTOMER)
                 .antMatchers("/customers/cart/**").permitAll()
-                .antMatchers("/employees/**").permitAll()
-                .antMatchers("/sales/**").permitAll()
+                
+                .antMatchers("/employees/warehouse-employees/**").hasAnyRole(Rol.ADMIN, Rol.WAREHOUSE_EMPLOYEE)
+                .antMatchers("/employees/shop-employees/**").hasAnyRole(Rol.ADMIN, Rol.SHOP_EMPLOYEE)
+                .antMatchers("/employees/warehouses/**").hasRole(Rol.ADMIN)
+                .antMatchers("/employees/shops/**").hasRole(Rol.ADMIN)
+                
+                .antMatchers("/sales/orders/**").hasRole(Rol.CUSTOMER)
+                .antMatchers("/sales/order-products/**").hasAnyRole(Rol.ADMIN, Rol.WAREHOUSE_EMPLOYEE)
                 //.antMatchers(HttpMethod.GET, "/auth/user/**").hasAnyRole(Rol.CUSTOMER,Rol.ADMIN)
                 .anyRequest().authenticated();
     }
